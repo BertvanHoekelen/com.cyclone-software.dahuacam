@@ -1,7 +1,7 @@
 {
     "id": "com.cyclone-software.dahuacam",
     "version": "0.1.0",
-    "compatibility": ">=1.5.0",
+    "compatibility": ">=2.0.0",
     "sdk": 2,
     "name": {
         "en": "Dahua Cam",
@@ -27,10 +27,11 @@
     "contributors": {
         "developers": []
     },
+    "brandColor": "#E8461D",
     "contributing": {
         "donate": {
             "paypal": {
-                "username": "info@cyclone-software.com"
+                "username": "marceltimmermans"
             }
         }
     },
@@ -142,8 +143,8 @@
                 "nl": "Dahua Camera Driver"
             },
             "images": {
-                "large": "/drivers/my_driver/assets/images/large.png",
-                "small": "/drivers/my_driver/assets/images/small.png"
+                "large": "/drivers/DahuaCamera/assets/images/large.png",
+                "small": "/drivers/DahuaCamera/assets/images/small.png"
             },
 			"pair": [
 				{
