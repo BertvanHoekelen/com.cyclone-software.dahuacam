@@ -1,0 +1,116 @@
+<script type="text/javascript">
+    Homey.setTitle( __('pair.title') );
+ 
+    $(function() {
+        $('#test-connection').click(function() {
+            $('.dahuacamera-test').hide();
+            $('.dahuacamera-ok').hide();
+            $('.dahuacamera-error').hide();
+            $('.dahuacamera-info').hide();
+            var inputaddress = $('#address').val();
+            var inputusername = $('#username').val();
+            var inputpassword = $('#password').val();
+            if( inputaddress != '') {
+                var device_data = {
+                    address  : inputaddress,
+                    username : inputusername,
+                    password : inputpassword
+                };
+                Homey.emit('testConnection', device_data, function(error, result) {
+                    if(error == 401) {
+                        $('.dahuacamera-error').show();
+                        $('.dahuacamera-error-msg').html( __('pair.unauthorized') );
+                    } else if(error == 408 || error == 504) {
+                        $('.dahuacamera-error').show();
+                        $('.dahuacamera-error-msg').html( __('pair.timeout') );
+                    } else if(error == 500) {
+                        $('.dahuacamera-error').show();
+                        $('.dahuacamera-error-msg').html( __('pair.servererror') );
+                    } else if(!error && result=="") {
+                        $('.dahuacamera-error').show();
+                        $('.dahuacamera-error-msg').html( __('pair.unknownerror') );
+                    } else if(result!="") {
+                        // var snapshot = 'data:image/jpeg;base64,' + image;
+                        // $('.dahuacamera-image').css('border', '4px solid #666');
+                         $('.typecamera').html(result);
+                         $('.dahuacamera-test').show();
+                         $('#connect').prop('disabled', false);
+                    } else {
+                        $('.dahuacamera-error').show();
+                        $('.dahuacamera-error-msg').html( __('pair.unknownerror') );
+                    }
+                });
+            } else {
+                $('.dahuacamera-error').show();
+                $('.dahuacamera-error-msg').html( __('pair.nosettings') );
+            }
+        });
+        $('#connect').click(function() {
+            var inputaddress = $('#address').val();
+            var inputusername = $('#username').val();
+            var inputpassword = $('#password').val();
+            if(inputaddress != '') {
+                var device_data = {
+                    id : inputaddress,
+                };
+                var settings = {
+                    address  : inputaddress,
+                    username : inputusername,
+                    password : inputpassword,
+                };
+                Homey.addDevice({
+                    name	: $('.typecamera').html(),
+                    data 	: device_data,
+                    settings: settings
+                }, function(error, result) {
+                    if (error) {
+                        $('.dahuacamera-error').show();
+                        $('.dahuacamera-error-msg').html(error.message || error.toString() );
+                    }
+                    $('.dahuacamera-test').hide();
+                    $('.dahuacamera-error').hide();
+                    $('.dahuacamera-ok').show();
+                    Homey.done();
+                })
+            } else {
+                $('.dahuacamera-error').show();
+                $('.dahuacamera-error-msg').html( __('pair.nosettings') );
+            }
+        });
+    })
+    </script>
+    
+    <style type="text/css">
+        .dahuacamera-status {
+            display: none;
+        }
+        .buttons, .messages {
+            padding-top: 14px;
+        }
+    </style>
+    
+    <p data-i18n="pair.intro">Enter the IP address of the Dahua Camera. In case you have configured a username and password for the Dahua Camera please enter these details as well, otherwise leave them empty.</p>
+    <div class="dahuacamera-pairing">
+            <div class="form-group">
+                <label for="address" data-i18n="pair.address">IP address</label>
+                <input type="text" class="form-control" id="address" placeholder="0.0.0.0" required>
+            </div>
+            <div class="form-group">
+                <label for="username" data-i18n="pair.username">Username</label>
+                <input type="text" class="form-control" id="username" value="admin">
+            </div>
+            <div class="form-group">
+                <label for="password" data-i18n="pair.password">Password</label>
+                <input type="password" class="form-control" id="password">
+            </div>
+            <div class="form-group buttons">
+                <button id="test-connection" class="button" data-i18n="pair.test">Test Connection</button>
+                <button id="connect" class="button" data-i18n="pair.connect" disabled>Connect</button>
+            </div>
+    </div>
+    <div class="messages">
+        <label class="typecamera"></label>
+        <p class="dahuacamera-status dahuacamera-test" style="color: #008C23;"><i class="fa fa-check"></i> <span class="dahuacamera-test-msg" data-i18n="pair.testing">Dahua Camera connection test succesfull</span></p>
+        <p class="dahuacamera-status dahuacamera-ok" style="color: #008C23;"><i class="fa fa-check"></i> <span class="dahuacamera-ok-msg" data-i18n="pair.success">Dahua Camera added succesfully</span></p>
+        <p class="dahuacamera-status dahuacamera-error" style="color: #ff6300;"><i class="fa fa-times"></i> <span class="dahuacamera-error-msg"></span></p>
+    </div>

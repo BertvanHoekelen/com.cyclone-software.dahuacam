@@ -1,0 +1,201 @@
+{
+    "id": "com.cyclone-software.dahuacam",
+    "version": "0.1.0",
+    "compatibility": ">=1.5.0",
+    "sdk": 2,
+    "name": {
+        "en": "Dahua Cam",
+        "nl": "Dahua Camera"
+    },
+    "description": {
+        "en": "Will add support to the Dahua Cameras",
+        "nl": "Voegt ondersteuning toe voor Dahua Camera's"
+    },
+    "category": "security",
+    "tags": {
+        "en": ["Dahua","Camera","Security"],
+        "nl": ["Dahua","Camera's","Beveliging"]
+    },
+    "images": {
+        "large": "/assets/images/large.png",
+        "small": "/assets/images/small.png"
+    },
+    "author": {
+        "email": "marcel@timmermans.us",
+        "name": "Marcel Timmermans"
+    },
+    "contributors": {
+        "developers": []
+    },
+    "contributing": {
+        "donate": {
+            "paypal": {
+                "username": "info@cyclone-software.com"
+            }
+        }
+    },
+    "capabilities": {
+        "my_type_capability": {
+            "type": "string",
+            "title": {
+                "en": "Type",
+                "nl": "Type"
+            },
+            "getable": true,
+            "setable": false
+        },
+        "my_version_capability": {
+            "type": "string",
+            "title": {
+                "en": "Version",
+                "nl": "Versie"
+            },
+            "getable": true,
+            "setable": false
+        }
+    },
+    "flow": {
+        "actions": [
+            {
+                "id": "gotoposition",
+                "title": {
+                    "en": "Go to preset position",
+                    "nl": "Ga naar vooraf ingestelde positie"
+                },
+                "args": [
+                    {
+                      "name": "position",
+                      "type": "text",
+                      "placeholder": {
+                        "en": "Type position...",
+                        "nl": "Type nummer vooraf ingestelde positie.."
+                      }
+                    },
+                    {
+                        "name": "device",
+                        "type": "device",
+                        "filter": "driver_id=DahuaCamera"
+                    }
+                  ]               
+            },
+            {
+                "id":"snapshot",
+                "title": {
+                    "en": "Create a snapshot",
+                    "nl": "Maak een snapshot"
+                },
+                "args": [
+                    {
+                        "name": "device",
+                        "type": "device",
+                        "filter": "driver_id=DahuaCamera"
+                    }
+                  ]   
+            },
+            {
+                "id":"reboot",
+                "title": {
+                    "en": "Reboot the device",
+                    "nl": "Opnieuw opstarten van Camera"
+                },
+                "args": [
+                    {
+                        "name": "device",
+                        "type": "device",
+                        "filter": "driver_id=DahuaCamera"
+                    }
+                  ]   
+            },            {
+                "id":"zoom",
+                "title": {
+                    "en": "Zoom in/out",
+                    "nl": "In/Uit zoomen"
+                },
+                "args": [
+                    {
+                        "name": "zoomnumber",
+                        "type": "number",
+                        "min": -100,
+                        "max": 100,
+                        "step": 1,
+                        "placeholder": {
+                            "en": "Zoom number",
+                            "nl": "Zoom nummer"
+                        }                        
+                    },
+                    {
+                        "name": "device",
+                        "type": "device",
+                        "filter": "driver_id=DahuaCamera"
+                    }
+                  ]   
+            }
+        ]
+    },
+    "drivers": [
+        {
+            "id": "DahuaCamera",
+            "class": "sensor",
+            "capabilities": ["my_type_capability","my_version_capability"],
+            "name": {
+                "en": "Dahua Camera Driver",
+                "nl": "Dahua Camera Driver"
+            },
+            "images": {
+                "large": "/drivers/my_driver/assets/images/large.png",
+                "small": "/drivers/my_driver/assets/images/small.png"
+            },
+			"pair": [
+				{
+					"id": "start"
+				}
+			],
+            "settings": [
+                {
+                    "type": "group",
+                    "label": {
+						"en": "Dahua Camera settings",
+						"nl": "Dahua Camera instellingen"
+                    },
+                    "children": [
+                        {
+							"id": "address",
+							"type": "text",
+							"value": "0.0.0.0",
+							"label": {
+								"en": "IP Address",
+								"nl": "IP adres"
+							}
+                        },
+                        {
+                            "id": "username",
+                            "type": "text",
+                            "label": {
+                                "en": "Username",
+                                "nl": "Gebruikersnaam"
+                            },
+                            "value": "admin",
+                            "hint": {
+                                "en": "Username of the ip camera",
+                                "nl": "Gebruikersnaam van de camera"
+                            }
+                        },
+                        {
+                            "id": "password",
+                            "type": "password",
+                            "label": {
+                                "en": "Password",
+                                "nl": "Wachtwoord"
+                            },
+                            "value": "",
+                            "hint": {
+                                "en": "Password of the ip camera",
+                                "nl": "Wachtwoord van de camera"
+                            }
+                        }
+                    ]
+                }           
+            ]
+        }
+    ]
+}

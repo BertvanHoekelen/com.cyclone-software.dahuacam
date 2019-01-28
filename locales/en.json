@@ -1,0 +1,34 @@
+{
+    "settings": {
+         "intro": "On this page you can manage your SMTP settings to make it possible to e-mail your snapshot",
+         "mailsettings": "Mail settings",
+         "use_credentials": "Use credentials",
+         "username": "Mail username",
+         "password": "Mail password",
+         "hostname": "SMTP server",
+         "port": "SMTP port",
+         "sender": "Sender address",
+         "testSettings": "Test settings",
+         "gmailexplanation": "If you wish to send through Gmail SMTP servers, you first need to allow less secure apps on Gmail via <a href='https://www.google.com/settings/security/lesssecureapps' target='_blank'>https://www.google.com/settings/security/lesssecureapps</a>",
+         "saveSettings": "Save settings",
+         "encrypted_connection": "Use encrypted connection"
+     },
+     "pair": {
+          "title": "Add Dahua Camera",
+          "nosettings": "Please fill in all the required fields.",
+          "unauthorized": "Error 401: this user is not authorized, please make sure you entered the correct details.",
+          "servererror": "Error 500: internal server error",
+          "timeout": "Timeout error: make sure you have entered the correct IP address and that the Dahua Camera is online.",
+          "unknownerror": "Unknown error, are you sure you have entered the correct IP address and Homey is on the same network as the Dahua Camera? Please check your settings and try again.",
+          "intro": "Enter the IP address of the Dahua Camera. In case you have configured a username and password of Dahua Camera please enter these details as well, otherwise leave them empty.",
+          "address": "IP Address",
+          "port": "Port",
+          "username": "Username (leave empty if not set)",
+          "password": "Password (leave empty if not set)",
+          "polling": "Polling Frequency",
+          "success": "Dahua Camera added succesfully",
+          "test" : "Test Connection",
+          "testing" : "Dahua Camera connection test succesfull, you can now connect the Dahua Camera.",
+          "connect": "Connect"
+    }
+}

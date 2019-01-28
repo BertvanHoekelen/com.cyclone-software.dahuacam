@@ -1,0 +1,34 @@
+{
+	"settings": {
+	  	"intro": "Op deze pagina zijn alle instellingen van uw SMTP te beheren. Dit is nodig indient u een snapshot maakt. Deze wordt dan aan u gemaild.",
+	  	"mailsettings": "Mail instellingen",
+		"use_credentials": "Gebruik login gegevens",
+	  	"username": "Mail gebruikersnaam",
+	  	"password": "Mail wachtwoord",
+	  	"hostname": "SMTP server",
+	  	"port": "SMTP poort",
+	  	"sender": "Adres afzender",
+	  	"testSettings": "Test instellingen",
+	  	"gmailexplanation": "Als u gebruik wenst te maken van de SMTP servers van Gmail, moeten eerst 'minder veilige apps' toegang krijgen tot uw GMail account. Ga naar <a href='https://www.google.com/settings/security/lesssecureapps' target='_blank'>https://www.google.com/settings/security/lesssecureapps</a> om dit in te schakelen.",
+	  	"saveSettings": "Instellingen opslaan",
+	  	"encrypted_connection": "Gebruik gecodeerde verbinding"
+	  },
+	  "pair": {
+		"title": "Dahua Camera toevoegen",
+        "nosettings": "Vul a.u.b. alle verplichte velden in.",
+        "unauthorized": "Foutmelding 401: deze gebruiker is niet geautoriseerd, controleer of u de juiste inlog gegevens van uw camera heeft.",
+        "servererror": "Foutmelding 500: interne server fout",
+        "timeout": "Timeout foutmelding: zorg ervoor dat je het correcte IP adres hebt ingevoerd en dat de Dahua Camera online is.",
+        "unknownerror": "Onbekende fout, weet je zeker dat je het juist IP adres hebt opgegeven en dat de Dahua Camera op hetzelfde netwerk zit als Homey? Controleer a.u.b. je instellingen en probeer het nog eens.",
+        "intro": "Voer het IP adres van de Dahua Camera in. Indien je een gebruikersnaam en wachtwoord van Dahua Camera heb ingesteld deze ook hier invullen, zo niet dan deze velden leeglaten.",
+        "address": "IP adres",
+        "port": "Poort",
+        "username": "Gebruikersnaam (leeglaten indien niet ingesteld)",
+        "password": "Wachtwoord (leeglaten indien niet ingesteld)",
+        "polling": "Polling frequentie",
+        "success": "Dahua Camera succesvol toegevoegd",
+        "test" : "Test connectie",
+        "testing" : "Dahua Camera connectietest succesvol, je kan de Dahua Camera nu verbinden.",
+        "connect": "Verbind"
+	}
+}
