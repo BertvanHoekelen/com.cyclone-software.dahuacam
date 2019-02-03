@@ -3,7 +3,6 @@
 
 const Homey = require('homey');
 const request = require('request');
-
 const DahuaCam = require('./dahuacambase.js');
 
 
@@ -13,7 +12,8 @@ let BASEURI
 class DahuaCamera extends Homey.Device {
 
     async onInit() {
-        this.log(`Init device ${this.getName()}`);
+        this.name = this.getName();
+        this.log(`Init device ${this.name}`);
 
         this.settings = this.getSettings();
 
@@ -25,18 +25,18 @@ class DahuaCamera extends Homey.Device {
 
     async upDateCapabilities()
     {
-        console.log('Updating Capabilities');
+        this.log('Updating Capabilities');
         await  DahuaCam.ptzGetDeviceType(this.settings.address,this.settings.username,this.settings.password).then( result => {
             this.setCapabilityValue("my_type_capability",result);
         }).catch( err => {
-            console.log(err);
+            this.log(err);
         });
 
         await DahuaCam.ptzGetSoftwareVersion(this.settings.address,this.settings.username,this.settings.password).then( result => {
             this.setCapabilityValue("my_version_capability", result);
         })
         .catch( err => {
-            console.log(err);
+            this.log(err);
         });     
     }
 
@@ -66,8 +66,8 @@ class DahuaCamera extends Homey.Device {
     }
 
     onFlowCardCameraTakeSnapshot(){
-        DahuaCam.MakeSnapshot(name, this.settings.address,this.settings.username,this.settings.password).then(result=>{
-            console.log('Snapshot done');
+        DahuaCam.MakeSnapshot(this.name, this.settings.address,this.settings.username,this.settings.password).then(result=>{
+            this.log('Snapshot done');
         }).catch(err => {
             console.log(err);
         });   
@@ -84,7 +84,7 @@ class DahuaCamera extends Homey.Device {
 
     onFlowCardCameraReboot(){
         DahuaCam.ptzReboot(this.settings.address,this.settings.username,this.settings.password).then(result=>{
-            console.log('Rebooting device');
+            this.log('Rebooting device');
         }).catch(err => {
             console.log(err);
         });

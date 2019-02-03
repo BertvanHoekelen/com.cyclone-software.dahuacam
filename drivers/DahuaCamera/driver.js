@@ -46,14 +46,7 @@ class DahuaDriver extends Homey.Driver {
                     return Promise.resolve( true );         
         })        
 
-        // new Homey.FlowCardAction('testaction')
-        // .register()
-        // .registerRunListener(( args, state ) => {     
-        //             if (args.device) {
-        //                 return Promise.resolve(args.device.onFlowCardTest());
-        //             }
-        //             return Promise.resolve( true );         
-        // })        
+   
 
     }
 

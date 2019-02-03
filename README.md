@@ -15,5 +15,8 @@ Please make sure when adding the camera you will add the username and password o
 - Reboot (reboot the device)
 
 
+### v 0.1.1
+Removed some bugs and code improvements
+
 ### v 0.1.0
 First BETA release (When in princible working I will try to add more functions)

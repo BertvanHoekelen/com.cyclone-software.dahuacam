@@ -2,11 +2,15 @@ var request = require("request");
 const nodemailer = require('nodemailer');
 const Homey = require('homey');
 
+
 exports.ptzGetDeviceType = function (address, username, password) {
-        return new Promise(function(resolve, reject){
+       return new Promise(function(resolve, reject){
             request('http://'+address+'/cgi-bin/magicBox.cgi?action=getDeviceType',function (error, response, body) {
                 if ((error) || (response.statusCode !== 200) || (!body.trim().startsWith("type="))) {
-                    reject(response.statusCode);
+                    if (response) 
+                       reject(response.statusCode);
+                    else 
+                       reject('getDeviceType:' + error.errno);
                 } else {
                     resolve(body.trim().substring(5, 100));
                 }
@@ -18,8 +22,10 @@ exports.ptzGetSoftwareVersion = function (address, username, password) {
     return new Promise(function(resolve, reject){
         request('http://'+address+'/cgi-bin/magicBox.cgi?action=getSoftwareVersion',function (error, response, body) {
             if ((error) || (response.statusCode !== 200) || (!body.trim().startsWith("version="))) {
-                //console.log('FAILED TO GETSOFTWAREVERSION');
-                reject(response.statusCode);
+                if (response) 
+                    reject(response.statusCode);
+                else 
+                    reject('GetSoftwareVersion:' + error.errno);
             } else {
                resolve(body.trim().substring(8, 100));
             }
@@ -32,7 +38,10 @@ exports.ptzReboot = function (address, username, password){
         request('http://'+address+'/cgi-bin/magicBox.cgi?action=reboot', function (error, response, body) {
             if ((error) || (response.statusCode !== 200) || (body.trim() !== "OK")) {
                 console.log('FAILED TO REBOOT');
-                reject(response.statusCode);
+                if (response) 
+                    reject(response.statusCode);
+                else 
+                 reject('Reboot:' +  error.errno);
             } else {
                 resolve(true);
              }
@@ -49,6 +58,8 @@ exports.MakeSnapshot = function (name, address, username, password){
         };
     
         request(getImageOptions ,  function done (err, res) {
+
+            if (err) return reject("MakeSnapShot:" + err.errno);
 
             const buffer = Buffer.from(res.body);
 
@@ -104,4 +115,5 @@ exports.MakeSnapshot = function (name, address, username, password){
             });
         }).auth(username,password,false);
     });
+
 }
