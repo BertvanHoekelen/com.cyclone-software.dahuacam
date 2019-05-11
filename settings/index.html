@@ -23,6 +23,23 @@
     </head>
     <body>
 
+		<h1>Device Settings</h1>
+		<fieldset>
+			<legend>Device Settings</legend>
+			<div class="field row">
+                    <label for="devchannel">Channel</label>
+                    <select id="devchannel">
+							<option value="0" selected="selected">Channel 0 (for screenshot)</option>
+							<option value="1">Channel 1 (for screenshot)</option>
+				  </select>
+                </div>	
+		</fieldset>
+
+		<button class="right" id="savebuttonDevSet" data-i18n="settings.saveSettings">Save changes</button>
+		<br />
+		<br />
+		<br />
+
         <h1>Email-Sender</h1>
         <p data-i18n="settings.intro">On this page you can manage your SMTP mail settings, which will be used to e-mail the snapshot.</p>
         
@@ -118,7 +135,13 @@
 		    Homey.get('mail_secure', function(err, mail_secure){
 		       if( err ) return console.error('Could not get mail_secure', err);
 		       document.getElementById('secure').checked = mail_secure; 
+			});		
+			Homey.get('devchannel', function(err, devchannel){
+			   if( err ) return console.error('Could not devchannel', err);
+			   if (devchannel=='') devchannel=0;
+		       document.getElementById('devchannel').value = devchannel; 
 		    });
+
 	        $('#savebutton').on("click", function() {
 		        
 				var savebutton = document.getElementById('savebutton');
@@ -131,8 +154,8 @@
 	            Homey.set('mail_host', document.getElementById('hostname').value);
 	            Homey.set('mail_port', document.getElementById('port').value);
                 Homey.set('mail_from', document.getElementById('sender').value);
-                Homey.set('mail_to', document.getElementById('recipient').value);
-	            Homey.set('mail_secure', document.getElementById('secure').checked);
+				Homey.set('mail_to', document.getElementById('recipient').value);
+				Homey.set('mail_secure', document.getElementById('secure').checked);
 	            
 	            console.log ("saved the settings!");
 	            
@@ -140,7 +163,16 @@
 	                    savebutton.disabled = false;
 	                }, 3500);
 	                
-	        });
+			});
+			
+			$('#savebuttonDevSet').on("click", function() {
+				var e = document.getElementById("devchannel");
+				var channel = e.options[e.selectedIndex].value;
+				Homey.set("devchannel", channel);
+				console.log(channel);
+				console.log ("saved the device settings!");
+			});
+
 	        
 	        $('#testbutton').on("click", function() {
 		            

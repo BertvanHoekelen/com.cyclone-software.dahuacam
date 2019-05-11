@@ -1,6 +1,6 @@
 {
     "id": "com.cyclone-software.dahuacam",
-    "version": "0.1.1",
+    "version": "0.2.0",
     "compatibility": ">=2.0.0",
     "sdk": 2,
     "name": {
@@ -56,6 +56,63 @@
         }
     },
     "flow": {
+        "triggers": [{
+            "id": "VideoMotionStart",
+            "title": {
+                "en": "VideoMotion Start",
+                "nl": "Video beweging gestart"
+            }
+        },
+        {
+            "id": "VideoMotionStop",
+            "title": {
+                "en": "VideoMotion Stop",
+                "nl": "Video beweging gestopt"
+            }
+        },
+        {
+            "id": "AlarmLocalStart",
+            "title": {
+                "en": "Alarm Local Start",
+                "nl": "Lokaal alarm gestart"
+            }
+        },
+        {
+            "id": "AlarmLocalStop",
+            "title": {
+                "en": "Alarm local stop",
+                "nl": "Lokaal alarm gestopt"
+            }
+        },
+        {
+            "id": "VideoLossStart",
+            "title": {
+                "en": "Videoloss Start",
+                "nl": "Geen Videosignaal"
+            }
+        },
+        {
+            "id": "VideoLossStop",
+            "title": {
+                "en": "Videoloss Stop",
+                "nl": "Video signaal aanwezig"
+            }
+        },
+        {
+            "id": "VideoBlindStart",
+            "title": {
+                "en": "Videoblind start",
+                "nl": "Videoblind start"
+            }
+        },
+        {
+            "id": "VideoBlindStop",
+            "title": {
+                "en": "Video Unblind",
+                "nl": "Video Unblind"
+            }
+        }
+    ],
         "actions": [
             {
                 "id": "gotoposition",
@@ -106,7 +163,8 @@
                         "filter": "driver_id=DahuaCamera"
                     }
                   ]   
-            },            {
+            }, 
+            {
                 "id":"zoom",
                 "title": {
                     "en": "Zoom in/out",
@@ -124,6 +182,34 @@
                             "nl": "Zoom nummer"
                         }                        
                     },
+                    {
+                        "name": "device",
+                        "type": "device",
+                        "filter": "driver_id=DahuaCamera"
+                    }
+                  ]   
+            },
+            {
+                "id":"toDayProfile",
+                "title": {
+                    "en": "Switch to day profile",
+                    "nl": "Omschakelen naar dag profiel"
+                },
+                "args": [
+                    {
+                        "name": "device",
+                        "type": "device",
+                        "filter": "driver_id=DahuaCamera"
+                    }
+                  ]   
+            },
+            {
+                "id":"toNightProfile",
+                "title": {
+                    "en": "Switch to night profile",
+                    "nl": "Omschakelen naar nacht profiel"
+                },
+                "args": [
                     {
                         "name": "device",
                         "type": "device",

@@ -44,10 +44,37 @@ class DahuaDriver extends Homey.Driver {
                         return Promise.resolve(args.device.onFlowCardCameraReboot());
                     }
                     return Promise.resolve( true );         
-        })        
+        })   
+        
+        new Homey.FlowCardAction('toDayProfile')
+        .register()
+        .registerRunListener(( args, state ) => {     
+                    if (args.device) {
+                        return Promise.resolve(args.device.toDayProfile());
+                    }
+                    return Promise.resolve( true );         
+        }) 
 
+        new Homey.FlowCardAction('toNightProfile')
+        .register()
+        .registerRunListener(( args, state ) => {     
+                    if (args.device) {
+                        return Promise.resolve(args.device.toNightProfile());
+                    }
+                    return Promise.resolve( true );         
+        }) 
+
+        this._triggers = {
+			trgTVideoMotionStart: new Homey.FlowCardTriggerDevice('VideoMotionStart').register(),
+			trgVideoMotionStop: new Homey.FlowCardTriggerDevice('VideoMotionStop').register(),
+			trgAlarmLocalStart: new Homey.FlowCardTriggerDevice('AlarmLocalStart').register(),
+			trgAlarmLocalStop: new Homey.FlowCardTriggerDevice('AlarmLocalStop').register(),
+			trgVideoLossStart: new Homey.FlowCardTriggerDevice('VideoLossStart').register(),
+			trgVideoLossStop: new Homey.FlowCardTriggerDevice('VideoLossStop').register(),
+			trgVideoBlindStart: new Homey.FlowCardTriggerDevice('VideoBlindStart').register(),
+			trgVideoBlindStop: new Homey.FlowCardTriggerDevice('VideoBlindStop').register(),
+		};
    
-
     }
 
     onPair(socket) {
