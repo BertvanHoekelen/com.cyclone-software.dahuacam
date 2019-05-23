@@ -26,6 +26,9 @@ I have tested most functions with the device "DH-SD22204T-GN"
  - Videoblind start
  - VideoBlindStop
 
+### v 0.2.1
+small bug fixes
+
 ### v 0.2.0
 Added new triggers and actions. I was not able to test it all. So therefor this beta release. I have added also in the settings menu a selector to chose the channel (0 or 1). The triggers are based on the Dahua Events. I hope this is working stable. 
 

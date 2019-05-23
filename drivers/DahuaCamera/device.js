@@ -115,39 +115,39 @@ class DahuaCamera extends Homey.Device {
             let code = alarm[0].substr(5);
             let action = alarm[1].substr(7);
             let index = alarm[2].substr(6);
-            this.log(`alarm:${alarm} code:${code} action:${action} index:${index}`);
+            console.log(`alarm:${alarm} code:${code} action:${action} index:${index}`);
 
             if (code === 'VideoMotion' && action === 'Start') {
                 this.driver._triggers.trgTVideoMotionStart.trigger(this, {}).catch(this.error).then(this.log);
-                this.log('Video Motion Detected')
+                console.log('Video Motion Detected')
             }
             if (code === 'VideoMotion' && action === 'Stop') {
                 this.driver._triggers.trgVideoMotionStop.trigger(this, {}).catch(this.error).then(this.log); 
-                this.log('Video Motion Ended');
+                console.log('Video Motion Ended');
             }
             if (code === 'AlarmLocal' && action === 'Start'){
                 this.driver._triggers.trgAlarmLocalStart.trigger(this, {}).catch(this.error).then(this.log); 
-                this.log('Local Alarm Triggered: ' + index);
+                console.log('Local Alarm Triggered: ' + index);
             }
             if (code === 'AlarmLocal' && action === 'Stop')	{
                 this.driver._triggers.trgAlarmLocalStop.trigger(this, {}).catch(this.error).then(this.log);
-                this.log('Local Alarm Ended: ' + index);
+                console.log('Local Alarm Ended: ' + index);
             }	
             if (code === 'VideoLoss' && action === 'Start')	{
                 this.driver._triggers.trgVideoLossStart.trigger(this, {}).catch(this.error).then(this.log);
-                this.log('Video Lost!');
+                console.log('Video Lost!');
             }	
             if (code === 'VideoLoss' && action === 'Stop')	{
                 this.driver._triggers.trgVideoLossStop.trigger(this, {}).catch(this.error).then(this.log);
-                this.log('Video Found!');
+                console.log('Video Found!');
             }	
             if (code === 'VideoBlind' && action === 'Start'){
                 this.driver._triggers.trgVideoBlindStart.trigger(this, {}).catch(this.error).then(this.log);
-                this.log('Video Blind!');
+                console.log('Video Blind!');
             }	
             if (code === 'VideoBlind' && action === 'Stop')	{
                 this.driver._triggers.trgVideoBlindStop.trigger(this, {}).catch(this.error).then(this.log);
-                this.log('Video Unblind!');
+                console.log('Video Unblind!');
             }	
          }
        });
