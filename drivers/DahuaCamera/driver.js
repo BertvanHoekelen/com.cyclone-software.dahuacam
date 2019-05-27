@@ -10,6 +10,8 @@ class DahuaDriver extends Homey.Driver {
     onInit() { 
         this.log('Init driver');
 
+        this.registerFlowCards();
+
         new Homey.FlowCardAction('gotoposition')
         .register()
         .registerRunListener(( args, state ) => {     
@@ -64,6 +66,11 @@ class DahuaDriver extends Homey.Driver {
                     return Promise.resolve( true );         
         }) 
 
+   
+    }
+
+    registerFlowCards() {
+       
         this._triggers = {
 			trgTVideoMotionStart: new Homey.FlowCardTriggerDevice('VideoMotionStart').register(),
 			trgVideoMotionStop: new Homey.FlowCardTriggerDevice('VideoMotionStop').register(),
@@ -74,7 +81,6 @@ class DahuaDriver extends Homey.Driver {
 			trgVideoBlindStart: new Homey.FlowCardTriggerDevice('VideoBlindStart').register(),
 			trgVideoBlindStop: new Homey.FlowCardTriggerDevice('VideoBlindStop').register(),
 		};
-   
     }
 
     onPair(socket) {

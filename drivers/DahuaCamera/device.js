@@ -23,8 +23,8 @@ class DahuaCamera extends Homey.Device {
         console.log(`device channel = ${channel}`);
 
         // Get driver.
-		this.driver = await this._getDriver();
-
+        this.driver = await this._getDriver();
+    
         // retrieve some basic info from camera (if possible)
         this.upDateCapabilities();
 
@@ -76,6 +76,8 @@ class DahuaCamera extends Homey.Device {
     }
 
     ConnectToDahua() {
+
+        const me = this;
    
         var opts = { 
           'url' : BASEURI + '/cgi-bin/eventManager.cgi?action=attach&codes=[AlarmLocal,VideoMotion,VideoLoss,VideoBlind]',
@@ -89,9 +91,9 @@ class DahuaCamera extends Homey.Device {
             console.log('socket');
         });
 
-        client.on('error', this.handleError.bind(this));
-        client.on('response',  this.handleResponse.bind(this));
-        client.on('data', this.handleData.bind(this));
+        client.on('error', me.handleError.bind(me));
+        client.on('response',  me.handleResponse.bind(me));
+        client.on('data', me.handleData.bind(me));
 
         client.on('close', function() {   // Try to reconnect after 30s
           setTimeout(function() { this.ConnectToDahua(); }, 30000 );
@@ -105,6 +107,7 @@ class DahuaCamera extends Homey.Device {
     }
 
     handleData(data) {
+        const me = this;
         console.log('Data: ' + data.toString());
         data = data.toString().split('\r\n');
         var lines = Object.keys(data);
@@ -118,35 +121,35 @@ class DahuaCamera extends Homey.Device {
             console.log(`alarm:${alarm} code:${code} action:${action} index:${index}`);
 
             if (code === 'VideoMotion' && action === 'Start') {
-                this.driver._triggers.trgTVideoMotionStart.trigger(this, {}).catch(this.error).then(this.log);
+                me.driver._triggers.trgTVideoMotionStart.trigger(me).catch(me.error).then(me.log);
                 console.log('Video Motion Detected')
             }
             if (code === 'VideoMotion' && action === 'Stop') {
-                this.driver._triggers.trgVideoMotionStop.trigger(this, {}).catch(this.error).then(this.log); 
+                me.driver._triggers.trgVideoMotionStop.trigger(me).catch(me.error).then(me.log); 
                 console.log('Video Motion Ended');
             }
             if (code === 'AlarmLocal' && action === 'Start'){
-                this.driver._triggers.trgAlarmLocalStart.trigger(this, {}).catch(this.error).then(this.log); 
+                me.driver._triggers.trgAlarmLocalStart.trigger(me).catch(me.error).then(me.log); 
                 console.log('Local Alarm Triggered: ' + index);
             }
             if (code === 'AlarmLocal' && action === 'Stop')	{
-                this.driver._triggers.trgAlarmLocalStop.trigger(this, {}).catch(this.error).then(this.log);
+                me.driver._triggers.trgAlarmLocalStop.trigger(me).catch(me.error).then(me.log);
                 console.log('Local Alarm Ended: ' + index);
             }	
             if (code === 'VideoLoss' && action === 'Start')	{
-                this.driver._triggers.trgVideoLossStart.trigger(this, {}).catch(this.error).then(this.log);
+                me.driver._triggers.trgVideoLossStart.trigger(me).catch(me.error).then(me.log);
                 console.log('Video Lost!');
             }	
             if (code === 'VideoLoss' && action === 'Stop')	{
-                this.driver._triggers.trgVideoLossStop.trigger(this, {}).catch(this.error).then(this.log);
+                me.driver._triggers.trgVideoLossStop.trigger(me).catch(me.error).then(me.log);
                 console.log('Video Found!');
             }	
             if (code === 'VideoBlind' && action === 'Start'){
-                this.driver._triggers.trgVideoBlindStart.trigger(this, {}).catch(this.error).then(this.log);
+                me.driver._triggers.trgVideoBlindStart.trigger(me).catch(me.error).then(me.log);
                 console.log('Video Blind!');
             }	
             if (code === 'VideoBlind' && action === 'Stop')	{
-                this.driver._triggers.trgVideoBlindStop.trigger(this, {}).catch(this.error).then(this.log);
+                me.driver._triggers.trgVideoBlindStop.trigger(MediaDevices).catch(me.error).then(me.log);
                 console.log('Video Unblind!');
             }	
          }
@@ -155,13 +158,13 @@ class DahuaCamera extends Homey.Device {
 
     handleError(err) {
         // Catch some errors
-        this.error('Could not connect to dahua:' + settings.address);
+        this.error('Could not connect to dahua:' + this.settings.address);
         if (err.code === 'ECONNREFUSED') {
             this.error('Connection refused');
         } else if (err.code === 'ENOTFOUND') {
-            this.error('Host ' + settings.address + ' not found.');
+            this.error('Host ' + this.settings.address + ' not found.');
         } else if (err.code === 'EHOSTUNREACH') {
-            this.error('Host ' + + settings.address + ' not found.');
+            this.error('Host ' + this.settings.address + ' not found.');
         } else {
             this.error(err.code);
         }
