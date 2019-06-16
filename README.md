@@ -26,6 +26,9 @@ I have tested most functions with the device "DH-SD22204T-GN"
  - Videoblind start
  - VideoBlindStop
 
+### v 0.2.3
+small bug fixes
+
 ### v 0.2.2
 splashed a number of bugs. Must be more stable now.
 

@@ -149,7 +149,7 @@ class DahuaCamera extends Homey.Device {
                 console.log('Video Blind!');
             }	
             if (code === 'VideoBlind' && action === 'Stop')	{
-                me.driver._triggers.trgVideoBlindStop.trigger(MediaDevices).catch(me.error).then(me.log);
+                me.driver._triggers.trgVideoBlindStop.trigger(me).catch(me.error).then(me.log);
                 console.log('Video Unblind!');
             }	
          }
@@ -158,15 +158,19 @@ class DahuaCamera extends Homey.Device {
 
     handleError(err) {
         // Catch some errors
-        this.error('Could not connect to dahua:' + this.settings.address);
-        if (err.code === 'ECONNREFUSED') {
-            this.error('Connection refused');
-        } else if (err.code === 'ENOTFOUND') {
-            this.error('Host ' + this.settings.address + ' not found.');
-        } else if (err.code === 'EHOSTUNREACH') {
-            this.error('Host ' + this.settings.address + ' not found.');
-        } else {
-            this.error(err.code);
+        try {
+            this.error('Could not connect to dahua:' + this.settings.address);
+            if (err.code === 'ECONNREFUSED') {
+                this.error('Connection refused');
+            } else if (err.code === 'ENOTFOUND') {
+                this.error('Host ' + this.settings.address + ' not found.');
+            } else if (err.code === 'EHOSTUNREACH') {
+                this.error('Host ' + this.settings.address + ' not found.');
+            } else {
+                this.error(err.code);
+            }        
+        } catch (error) {
+            this.error('Could not connect to camera');
         }
     }
     
