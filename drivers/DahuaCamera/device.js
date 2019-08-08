@@ -24,11 +24,13 @@ class DahuaCamera extends Homey.Device {
 
         // Get driver.
         this.driver = await this._getDriver();
-    
+
         // retrieve some basic info from camera (if possible)
         this.upDateCapabilities();
 
         this.ConnectToDahua();
+
+        this._registerSnapshotImage();
     }
 
     	// Get a (ready) instance of the driver.
@@ -53,7 +55,7 @@ class DahuaCamera extends Homey.Device {
         })
         .catch( err => {
             this.log(err);
-        });     
+        });
     }
 
     onSettings( oldSettingsObj, newSettingsObj, changedKeysArr, callback ) {
@@ -78,15 +80,15 @@ class DahuaCamera extends Homey.Device {
     ConnectToDahua() {
 
         const me = this;
-   
-        var opts = { 
+
+        var opts = {
           'url' : BASEURI + '/cgi-bin/eventManager.cgi?action=attach&codes=[AlarmLocal,VideoMotion,VideoLoss,VideoBlind]',
           'forever' : true,
           'headers': {'Accept':'multipart/x-mixed-replace'}
         };
-    
+
         var client = request(opts).auth(this.settings.username,this.settings.password,false);
-    
+
         client.on('socket', function(socket) {
             console.log('socket');
         });
@@ -99,7 +101,7 @@ class DahuaCamera extends Homey.Device {
           setTimeout(function() { this.ConnectToDahua(); }, 30000 );
           console.log('Connection Closed');
         });
-      
+
     };
 
     handleResponse(options){
@@ -125,33 +127,33 @@ class DahuaCamera extends Homey.Device {
                 console.log('Video Motion Detected')
             }
             if (code === 'VideoMotion' && action === 'Stop') {
-                me.driver._triggers.trgVideoMotionStop.trigger(me).catch(me.error).then(me.log); 
+                me.driver._triggers.trgVideoMotionStop.trigger(me).catch(me.error).then(me.log);
                 console.log('Video Motion Ended');
             }
             if (code === 'AlarmLocal' && action === 'Start'){
-                me.driver._triggers.trgAlarmLocalStart.trigger(me).catch(me.error).then(me.log); 
+                me.driver._triggers.trgAlarmLocalStart.trigger(me).catch(me.error).then(me.log);
                 console.log('Local Alarm Triggered: ' + index);
             }
             if (code === 'AlarmLocal' && action === 'Stop')	{
                 me.driver._triggers.trgAlarmLocalStop.trigger(me).catch(me.error).then(me.log);
                 console.log('Local Alarm Ended: ' + index);
-            }	
+            }
             if (code === 'VideoLoss' && action === 'Start')	{
                 me.driver._triggers.trgVideoLossStart.trigger(me).catch(me.error).then(me.log);
                 console.log('Video Lost!');
-            }	
+            }
             if (code === 'VideoLoss' && action === 'Stop')	{
                 me.driver._triggers.trgVideoLossStop.trigger(me).catch(me.error).then(me.log);
                 console.log('Video Found!');
-            }	
+            }
             if (code === 'VideoBlind' && action === 'Start'){
                 me.driver._triggers.trgVideoBlindStart.trigger(me).catch(me.error).then(me.log);
                 console.log('Video Blind!');
-            }	
+            }
             if (code === 'VideoBlind' && action === 'Stop')	{
                 me.driver._triggers.trgVideoBlindStop.trigger(me).catch(me.error).then(me.log);
                 console.log('Video Unblind!');
-            }	
+            }
          }
        });
     }
@@ -168,18 +170,18 @@ class DahuaCamera extends Homey.Device {
                 this.error('Host ' + this.settings.address + ' not found.');
             } else {
                 this.error(err.code);
-            }        
+            }
         } catch (error) {
             this.error('Could not connect to camera');
         }
     }
-    
+
 
     toDayProfile () {
         request(BASEURI + '/cgi-bin/configManager.cgi?action=setConfig&VideoInMode[0].Config[0]=1', function (error, response, body) {
           if ((!error) && (response.statusCode === 200)) {
             if (body === 'Error') {   // Didnt work, lets try another method for older cameras
-              request(BASEURI + '/cgi-bin/configManager.cgi?action=setConfig&VideoInOptions[0].NightOptions.SwitchMode=0', function (error, response, body) { 
+              request(BASEURI + '/cgi-bin/configManager.cgi?action=setConfig&VideoInOptions[0].NightOptions.SwitchMode=0', function (error, response, body) {
                 if ((error) || (response.statusCode !== 200)) {
                     this.log('Not able to change to day profile');
                 }
@@ -187,15 +189,15 @@ class DahuaCamera extends Homey.Device {
             }
           } else {
             this.log('Not able to change to day profile');
-          } 
+          }
         }).auth(this.settings.username,this.settings.password,false);
       };
-      
+
       toNightProfile () {
         request(BASEURI + '/cgi-bin/configManager.cgi?action=setConfig&VideoInMode[0].Config[0]=2', function (error, response, body) {
           if ((!error) && (response.statusCode === 200)) {
             if (body === 'Error') {   // Didnt work, lets try another method for older cameras
-              request(BASEURI + '/cgi-bin/configManager.cgi?action=setConfig&VideoInOptions[0].NightOptions.SwitchMode=3', function (error, response, body) { 
+              request(BASEURI + '/cgi-bin/configManager.cgi?action=setConfig&VideoInOptions[0].NightOptions.SwitchMode=3', function (error, response, body) {
                 if ((error) || (response.statusCode !== 200)) {
                   this.log('Not able to change to night profile');
                 }
@@ -203,10 +205,10 @@ class DahuaCamera extends Homey.Device {
             }
           } else {
             this.log('Not able to change to night profile');
-          } 
+          }
         }).auth(this.settings.username,this.settings.password,false);
       };
-      
+
 
     onFlowCardCameraToPosition(position) {
         try {
@@ -222,7 +224,7 @@ class DahuaCamera extends Homey.Device {
             this.log('Snapshot done');
         }).catch(err => {
             console.log(err);
-        });   
+        });
     }
 
     onFlowCardCameraZoom(zoomnumber) {
@@ -231,7 +233,7 @@ class DahuaCamera extends Homey.Device {
           } catch (err) {
             return false;
         }
-        return true;       
+        return true;
     }
 
     onFlowCardCameraReboot(){
@@ -265,9 +267,9 @@ class DahuaCamera extends Homey.Device {
         if (multiple === 0) return false; // no need to change anything
         if (multiple > 0) cmd = 'ZoomTele';
         if (multiple < 0) cmd = 'ZoomWide';
-     
+
         console.log('zoom function:'+cmd + ' ' + multiple);
-      
+
         request(BASEURI + '/cgi-bin/ptz.cgi?action=start&channel=' + channel + '&code=' + cmd + '&arg1=0&arg2=' + multiple + '&arg3=0', function (error, response, body) {
           if ((error) || (response.statusCode !== 200) || (body.trim() !== "OK")) {
             console.log('FAILED TO ISSUE PTZ ZOOM');
@@ -276,10 +278,22 @@ class DahuaCamera extends Homey.Device {
         }).auth(this.settings.username,this.settings.password,false);
       };
 
+      async _registerSnapshotImage() {
+        const snapshotImage = new Homey.Image();
 
+        // Set stream, this method is called when image.update() is called
+        snapshotImage.setStream(async (stream) => {
+          const res = await DahuaCam.FetchSnapshot(this.settings.address, this.settings.username, this.settings.password);
 
+          res.pipe(stream);
+        });
 
-    
+        // Register and set camera image
+        return snapshotImage.register()
+          .then(() => this.log('_registerSnapshotImage() -> registered'))
+          .then(() => this.setCameraImage('snapshot', 'Snapshot', snapshotImage))
+          .catch(this.error);
+      }
 }
 
 module.exports = DahuaCamera;
